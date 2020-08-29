@@ -14,10 +14,13 @@ ageDataX = np.where(np.isnan(ageDataX), np.ma.array(ageDataX,mask = np.isnan(age
 sexDataX = dataSet.iloc[:,4] #create dummy
 survivalDataX = dataSet.iloc[:,1] #dummy
 fareDataY = dataSet.iloc[:,9]
-
 #LabelEncoding
 lb = LabelEncoder()
 sexDataX = lb.fit_transform(sexDataX)
+
+#featureMatrix
+featureMatrix = np.concatenate()
+
 
 #---------------------------Functions------------------
 
@@ -43,5 +46,26 @@ def removeOutliers(x):
 
     return finalArray
 
+#hypothesis
+def hypothesis(featureArray, theetaArray):
+    return featureArray*theetaArray    
 
+def partialDerivativeTheetaZero(featureArray,updatedTheetas):
+    hypothesisArray = featureArray*updatedTheetas
+    return  (hypothesisArray - fareDataY)/featureArrayRows  #Define ROws
+
+def partialDerivativesOfTheetas(updatedTheetas,currentFeatureCoefficient):
+    hypothesisArray = featureArray*updatedTheetas
+    return  ((hypothesisArray - fareDataY)*currentFeatureCoefficient)/featureArrayRows
+
+    
+
+
+def gradientDescent (stepSize):
+
+    while True:
+        theetaZero = theetaZero - (stepSize*partialDerivativeTheetaZero(arguements))
+
+        for i in theetaArray:
+            updatedTheetas = np.append(updatedTheetas,partialDerivativesOfTheetas(updatedTheetas,i))
 
