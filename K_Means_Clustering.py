@@ -14,7 +14,7 @@ def centroidsDistance(dataMatrixRow,updatedCentroidsArray):
     updatedCentroidsArrayRows = updatedCentroidsArrayShape[0]
 
     for i in range(updatedCentroidsArrayRows) :
-        distances = np.append(distances,(dataMatrixRow[0]-updatedCentroidsArray[i,0])**2 + (dataMatrixRow[0]-updatedCentroidsArray[i,1])**2 + (dataMatrixRow[0]-updatedCentroidsArray[i,2])**2)
+        distances = np.append(distances,(dataMatrixRow[0]-updatedCentroidsArray[i,0])**2 + (dataMatrixRow[1]-updatedCentroidsArray[i,1])**2 + (dataMatrixRow[2]-updatedCentroidsArray[i,2])**2)
 
     return distances
 
