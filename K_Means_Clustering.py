@@ -29,11 +29,11 @@ def kMeansClustering(dataMatrix, totalCentroids):
 
     for i in range(totalCentroids):
         centroidsArray[i] = dataMatrix[random.randint(0,dataMatrix.shape[0])]
-    #print(centroidsArray)
+    
     for i in range(dataMatrix.shape[0]):
         distanceArray = centroidsDistance(dataMatrix[i,:],centroidsArray)
         centroidsArray = updateCentroids(dataMatrix[i,:],distanceArray,centroidsArray)    
-        #print(i)
+        
     return centroidsArray
 
 def rgb2HexConverter(centroidsArray):
@@ -42,7 +42,6 @@ def rgb2HexConverter(centroidsArray):
     counter = 0
     for i in range(centroidsArray.shape[0]):
         centroidsRGBformat = np.append(centroidsRGBformat,rgb2hex(centroidsArray[i,0],centroidsArray[i,1],centroidsArray[i,2]))
-    #print(centroidsRGBformat[1])
     for i in range(outputArray.shape[0]):
         outputArray[i,0] = centroidsRGBformat[counter]
         counter += 1
@@ -58,21 +57,58 @@ def rgb2HexConverter(centroidsArray):
 
 #-------------Data Pre-Processing-----------------
 
-dataPath = glob.glob("C:/Users/Ali Raza/Desktop/W/*.png")
-featureMatrix = np.empty((0,3))
+#TechColors
+dataPathTech = glob.glob("C:/Users/Ali Raza/Google Drive/Logo Generator Project/DataSets/TECH/*.png")
+featureMatrixTech = np.empty((0,3))
 
-for image in dataPath:
+for image in dataPathTech:
     img = cv2.imread(image)
-    shape = img.shape
-    img = np.reshape(img,(shape[0]*shape[1],3))
-    featureMatrix = np.concatenate((featureMatrix,img))
+    img = np.reshape(img,(img.shape[0]*img.shape[1],3))
+    featureMatrixTech = np.concatenate((featureMatrixTech,img))
 
 
-#print(dataMatrixShape)
+#FoodColors
+dataPathFood = glob.glob("C:/Users/Ali Raza/Google Drive/Logo Generator Project/DataSets/FOOD/*.png")
+featureMatrixFood = np.empty((0,3))
 
-clusters = kMeansClustering(featureMatrix,40)
-clusters = np.asarray(clusters,dtype=int)
+for image in dataPathFood:
+    img = cv2.imread(image)
+    img = np.reshape(img,(img.shape[0]*img.shape[1],3))
+    featureMatrixFood = np.concatenate((featureMatrixFood,img))
 
-outputDictionary = {"food":rgb2HexConverter(clusters)}
+#Metallic Colors
+dataPathMetallic = glob.glob("C:/Users/Ali Raza/Google Drive/Logo Generator Project/DataSets/METALLIC/*.png")
+featureMatrixMetallic = np.empty((0,3))
 
-print(outputDictionary["food"])
+for image in dataPathMetallic:
+    img = cv2.imread(image)
+    img = np.reshape(img,(img.shape[0]*img.shape[1],3))
+    featureMatrixMetallic = np.concatenate((featureMatrixMetallic,img))
+
+#Wood Colors
+dataPathWood = glob.glob("C:/Users/Ali Raza/Google Drive/Logo Generator Project/DataSets/WOOD/*.png")
+featureMatrixWood = np.empty((0,3))
+
+for image in dataPathWood:
+    img = cv2.imread(image)
+    img = np.reshape(img,(img.shape[0]*img.shape[1],3))
+    featureMatrixWood = np.concatenate((featureMatrixWood,img))
+
+
+#---------------Driver Code-------------------
+
+clustersFood = kMeansClustering(featureMatrixFood,40)
+clustersFood = np.asarray(clustersFood, dtype=int)
+
+clustersTech = kMeansClustering(featureMatrixTech,40)
+clustersTech = np.asarray(clustersTech, dtype=int)
+
+clustersWood = kMeansClustering(featureMatrixWood,40)
+clustersWood = np.asarray(clustersWood, dtype=int)
+
+clustersMetallic = kMeansClustering(featureMatrixMetallic,40)
+clustersMetallic = np.asarray(clustersMetallic, dtype=int)
+
+
+
+outputDictionary = {"food":rgb2HexConverter(clustersFood), "tech":rgb2HexConverter(clustersTech), "metallic":rgb2HexConverter(clustersMetallic), "wood":rgb2HexConverter(clustersWood)}
